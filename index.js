@@ -26,7 +26,7 @@ import {
 
 import * as firebaseui from 'firebaseui';
 
-// Document elements
+// // Document elements
 const startRsvpButton = document.getElementById('startRsvp');
 const guestbookContainer = document.getElementById('guestbook-container');
 
@@ -56,88 +56,88 @@ async function main() {
     measurementId: 'G-92B4ZWBPYS',
   };
 
-  initializeApp(firebaseConfig);
-  auth = getAuth();
-  db = getFirestore();
+  const app = initializeApp(firebaseConfig);
+  // auth = getAuth();
+  // db = getFirestore();
 
-  const provider = new GoogleAuthProvider();
+  // const provider = new GoogleAuthProvider();
 
   var finalUser;
   console.log('NEEL');
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      startRsvpButton.textContent = 'LOGOUT';
-      finalUser = user;
-    } else {
-      startRsvpButton.textContent = 'RSVP';
-      rsvpYes.disabled = true;
-    }
-  });
-  startRsvpButton.addEventListener('click', () => {
-    if (auth.currentUser) {
-      // User is signed in; allows user to sign out
-      signOut(auth);
-    } else {
-      // No user is signed in; allows user to sign in
-      signInWithPopup,
-        (auth, provider)
-          .then((result) => {
-            // This gives you a Google Access Token. You can use it to access the Google API.
-            const credential = GoogleAuthProvider.credentialFromResult(result);
-            const token = credential.accessToken;
-            // The signed-in user info.
+  // onAuthStateChanged(auth, (user) => {
+  //   if (user) {
+  //     startRsvpButton.textContent = 'LOGOUT';
+  //     finalUser = user;
+  //   } else {
+  //     startRsvpButton.textContent = 'RSVP';
+  //     rsvpYes.disabled = true;
+  //   }
+  // });
+  // startRsvpButton.addEventListener('click', () => {
+  //   if (auth.currentUser) {
+  //     // User is signed in; allows user to sign out
+  //     signOut(auth);
+  //   } else {
+  //     // No user is signed in; allows user to sign in
+  //     signInWithPopup,
+  //       (auth, provider)
+  //         .then((result) => {
+  //           // This gives you a Google Access Token. You can use it to access the Google API.
+  //           const credential = GoogleAuthProvider.credentialFromResult(result);
+  //           const token = credential.accessToken;
+  //           // The signed-in user info.
 
-            finalUser = result.user;
+  //           finalUser = result.user;
 
-            // ...
-          })
-          .catch((error) => {
-            // Handle Errors here.
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // The email of the user's account used.
-            const email = error.customData.email;
-            // The AuthCredential type that was used.
-            const credential = GoogleAuthProvider.credentialFromError(error);
-            // ...
-          });
-    }
-  });
+  //           // ...
+  //         })
+  //         .catch((error) => {
+  //           // Handle Errors here.
+  //           const errorCode = error.code;
+  //           const errorMessage = error.message;
+  //           // The email of the user's account used.
+  //           const email = error.customData.email;
+  //           // The AuthCredential type that was used.
+  //           const credential = GoogleAuthProvider.credentialFromError(error);
+  //           // ...
+  //         });
+  //   }
+  // });
 
-  const ui = new firebaseui.auth.AuthUI(auth);
+  // const ui = new firebaseui.auth.AuthUI(auth);
 
-  rsvpYes.addEventListener('click', () => {
-    setDoc(doc(db, 'counter', finalUser.uid), {
-      attending: true,
-      uid: finalUser.uid,
-    });
-  });
-  rsvpNo.addEventListener('click', () => {
-    setDoc(doc(db, 'counter', finalUser.uid), {
-      attending: false,
-      uid: finalUser.uid,
-    });
-  });
+  // rsvpYes.addEventListener('click', () => {
+  //   setDoc(doc(db, 'counter', finalUser.uid), {
+  //     attending: true,
+  //     uid: finalUser.uid,
+  //   });
+  // });
+  // rsvpNo.addEventListener('click', () => {
+  //   setDoc(doc(db, 'counter', finalUser.uid), {
+  //     attending: false,
+  //     uid: finalUser.uid,
+  //   });
+  // });
 
-  const q = query(collection(db, 'counter'));
-  onSnapshot(q, (snaps) => {
-    var counter = 0;
-    snaps.forEach((doc) => {
-      if (doc.data().attending) {
-        if (doc.data().uid == finalUser.uid) {
-          rsvpYes.style.backgroundColor = 'green';
-        }
-        counter += 1;
-      } else if (doc.data().uid == finalUser.uid) {
-        rsvpYes.style.backgroundColor = 'white';
-      }
-    });
-    count.innerHTML = counter;
+  // const q = query(collection(db, 'counter'));
+  // onSnapshot(q, (snaps) => {
+  //   var counter = 0;
+  //   snaps.forEach((doc) => {
+  //     if (doc.data().attending) {
+  //       if (doc.data().uid == finalUser.uid) {
+  //         rsvpYes.style.backgroundColor = 'green';
+  //       }
+  //       counter += 1;
+  //     } else if (doc.data().uid == finalUser.uid) {
+  //       rsvpYes.style.backgroundColor = 'white';
+  //     }
+  //   });
+  //   count.innerHTML = counter;
 
-    if (counter >= 1) {
-      document.body.style.backgroundColor = 'black';
-    }
-  });
+  //   if (counter >= 1) {
+  //     document.body.style.backgroundColor = 'black';
+  //   }
+  // });
 }
 main();
